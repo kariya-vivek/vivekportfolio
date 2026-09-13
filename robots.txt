@@ -1,4 +1,4 @@
 ﻿User-agent: *
 Allow: /
 
-Sitemap: https://vivekportfolio-blue.vercel.app/sitemap.xml
+Sitemap: https://vivekportfolio-vk.vercel.app/sitemap.xml
