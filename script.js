@@ -489,7 +489,7 @@ const portfolioKnowledge = {
   identity: "Vivek Kariya is an early-career BCA graduate and Full Stack Developer based in Gujarat. His portfolio focuses on hands-on project experience across web applications, desktop software, databases and AI-enabled solutions.",
   education: "Vivek is currently pursuing an MCA (2026). He holds a BCA degree (79.82%) from Kamani Science College and achieved a stellar 96.34 percentile in his HSC.",
   skills: "Vivek's core technical stack includes:<br>• <b>Frontend:</b> HTML/CSS, JS, React, Next.js<br>• <b>Backend:</b> PHP, Python, Node.js<br>• <b>Databases:</b> MySQL, SQLite, Supabase<br>• <b>Tools:</b> Git, VS Code, Figma<br>He is comfortable working across the entire stack.",
-  projects: "Vivek has hands-on project experience building complete applications. Notable projects include:<br>• <b>Craftzon:</b> A multi-vendor e-commerce marketplace (PHP/MySQL)<br>• <b>Shakti POS:</b> Offline-first desktop inventory software with cloud sync (Python/SQLite)<br>• <b>Teacher Learning Platform:</b> An educational platform (Next.js)",
+  projects: "Vivek has hands-on project experience building complete applications. Notable projects include:<br>• <b>MahakalAcademy:</b> AI-powered multilingual learning & proctored assessment platform (Next.js 14 / Gemini AI / Supabase)<br>• <b>Craftzon:</b> A multi-vendor e-commerce marketplace (PHP / MySQL)<br>• <b>Shakti POS:</b> Offline-first desktop inventory software with cloud sync (Python / SQLite)",
   services: "Vivek provides practical development services including:<br>• Full-stack web applications<br>• E-commerce platforms<br>• Admin dashboards<br>• POS & inventory systems<br>• Educational platforms<br>• AI integrations",
   hiring: "Vivek is an early-career developer actively looking for opportunities where he can contribute and grow. He is available for freelance projects, internships, and full-time roles.",
   contact: "You can reach Vivek directly:<br>• <b>Email:</b> vivekkariya22@gmail.com<br>• <b>Phone/WhatsApp:</b> +91 9428531640<br>Or connect with him on LinkedIn and GitHub via the links in the Contact section."
@@ -499,7 +499,7 @@ const synonymMaps = {
   identity: ["who", "about", "profile", "summary", "introduce", "developer", "fresher", "vivek"],
   education: ["study", "qualification", "bca", "mca", "college", "degree", "percentage", "education"],
   skills: ["skill", "skills", "technologies", "stack", "know", "react", "php", "python", "mysql", "frontend", "backend", "database", "tools", "expertise"],
-  projects: ["project", "projects", "build", "built", "craftzon", "shakti", "application", "portfolio", "created", "developed"],
+  projects: ["project", "projects", "build", "built", "craftzon", "mahakal", "mahakalacademy", "shakti", "application", "portfolio", "created", "developed"],
   services: ["service", "services", "offer", "ecommerce", "website", "dashboard"],
   hiring: ["hire", "hiring", "job", "work", "available", "internship", "full-time", "freelance", "opportunity", "recruitment", "experienced", "senior", "role"],
   contact: ["contact", "email", "phone", "whatsapp", "linkedin", "reach", "connect"]
@@ -883,6 +883,25 @@ const certificateData = [
 
 const projectData = [
     {
+        "id": "mahakalacademy",
+        "category": "web",
+        "title": "MahakalAcademy - AI-Powered Learning & Assessment Platform",
+        "desc": "A production-ready full-stack EdTech platform engineered to provide free, accessible education across India. Features Multimodal AI (Google Gemini API) to extract questions from multi-page PDFs/images into MCQs, anti-cheat proctored online testing with tab-switch & fullscreen violation tracking, tri-lingual support (English, Hindi, Gujarati), curated study materials via Google Drive, and automated student scorecards.",
+        "image": "./assets/projects/mhakalaccadmylogo.jpeg",
+        "tech": [
+            "Next.js 14",
+            "TypeScript",
+            "Tailwind CSS",
+            "Prisma ORM",
+            "PostgreSQL",
+            "Supabase",
+            "Gemini AI"
+        ],
+        "liveUrl": "https://mahakalacademy.vercel.app",
+        "githubUrl": null,
+        "reportUrl": null
+    },
+    {
         "id": "craftzon",
         "category": "web",
         "title": "CraftZon - Multi-Vendor Handicraft Marketplace",
@@ -919,26 +938,11 @@ const projectData = [
         "reportUrl": "https://drive.google.com/file/d/1tb9yIRSuUpRTutgPDv6rd2baLuQdTWxq/view?usp=drivesdk"
     },
     {
-        "id": "teacher-platform",
-        "category": "web",
-        "title": "Teacher Learning Platform",
-        "desc": "A full-featured educational platform built with Next.js + Supabase. Teachers upload PDFs, manage courses, and share video links. Students track progress.",
-        "image": "./assets/projects/mhakalaccadmylogo.jpeg",
-        "tech": [
-            "Next.js",
-            "Supabase",
-            "Google Drive API"
-        ],
-        "liveUrl": null,
-        "githubUrl": null,
-        "reportUrl": null
-    },
-    {
         "id": "ai-pdf",
         "category": "future",
         "title": "AI PDF Translator & Editor",
         "desc": "An AI-powered PDF tool that translates, summarizes, and edits PDFs while preserving layout. Multi-language translation, OCR, and smart AI summaries.",
-        "image": "./assets/projects/ai-pdf.jpg",
+        "image": "./assets/projects/ai-pdf.png",
         "tech": [
             "Next.js",
             "AI APIs",
@@ -1112,7 +1116,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Projects
   window.projCarousel = new PremiumCarousel('projCarouselWrap', projectData, (item, i) => `
     <div class="premium-card">
-      <img src="${encodeURI(item.image)}" alt="${item.title}" class="premium-card-image" loading="${i===0?'eager':'lazy'}" decoding="async" onerror="console.error('Missing image:', this.src);">
+      <div class="premium-card-image-wrap">
+        <div class="premium-card-image-blur" style="background-image: url('${encodeURI(item.image)}');"></div>
+        <img src="${encodeURI(item.image)}" alt="${item.title}" class="premium-card-image" loading="${i===0?'eager':'lazy'}" decoding="async" onerror="console.error('Missing image:', this.src);">
+      </div>
       <div class="premium-card-body">
         <div class="premium-card-title">${item.title}</div>
         <div class="premium-card-subtitle">${item.desc}</div>

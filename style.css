@@ -945,16 +945,47 @@ footer { background: var(--bg); position: relative; padding: 60px 5% 24px; overf
   box-shadow: 0 15px 45px rgba(0,0,0,0.08);
   border: 1px solid rgba(255,255,255,0.05);
 }
-.premium-card-image {
+.premium-card-image-wrap {
   width: 100%;
   aspect-ratio: 16 / 10;
-  object-fit: cover;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+[data-theme="light"] .premium-card-image-wrap {
+  background: rgba(0, 0, 0, 0.04);
+}
+.premium-card-image-blur {
+  position: absolute;
+  inset: -15px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(25px) brightness(0.5);
+  opacity: 0.35;
+  transform: scale(1.15);
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="light"] .premium-card-image-blur {
+  filter: blur(25px) brightness(0.95);
+  opacity: 0.25;
+}
+.premium-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   object-position: center;
   display: block;
-  background: var(--surface);
-}
-[data-theme="dark"] .premium-card-image {
-  background: var(--surface2);
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  box-sizing: border-box;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .premium-card-body {
   padding: 30px;
@@ -1118,6 +1149,6 @@ footer { background: var(--bg); position: relative; padding: 60px 5% 24px; overf
 #projCarouselWrap .premium-card-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
