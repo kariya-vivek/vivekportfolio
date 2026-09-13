@@ -886,7 +886,7 @@ const projectData = [
         "id": "mahakalacademy",
         "category": "web",
         "title": "MahakalAcademy - AI-Powered Learning & Assessment Platform",
-        "desc": "A production-ready full-stack EdTech platform engineered to provide free, accessible education across India. Features Multimodal AI (Google Gemini API) to extract questions from multi-page PDFs/images into MCQs, anti-cheat proctored online testing with tab-switch & fullscreen violation tracking, tri-lingual support (English, Hindi, Gujarati), curated study materials via Google Drive, and automated student scorecards.",
+        "desc": "A production-ready full-stack EdTech platform engineered with Next.js 14, Prisma, PostgreSQL & Supabase. Features Multimodal Gemini AI to auto-generate structured MCQs from multi-page PDFs/images, anti-cheat proctored online testing with real-time violation tracking, trilingual support (English, Hindi, Gujarati), Web Push notifications, and secure Google Drive study material distribution.",
         "image": "./assets/projects/mhakalaccadmylogo.jpeg",
         "tech": [
             "Next.js 14",
