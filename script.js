@@ -96,25 +96,32 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Premium Cinematic Loader
+// Fast & Smooth Cinematic Loader with Session Cache
 window.addEventListener('load', () => {
   const loader = document.getElementById('loader');
-  
-  // FAILSAFE: Always remove loader after 7000ms if something crashes
+  if (!loader) return;
+
+  function dismissLoaderImmediately() {
+    loader.style.display = 'none';
+    loader.style.pointerEvents = 'none';
+    document.documentElement.classList.remove('loading-active');
+    document.body.classList.remove('loading-active');
+    document.body.style.overflow = '';
+    if (typeof typewriterEffect === 'function') typewriterEffect();
+  }
+
+  // Check if visitor has already seen the loader in this session
+  if (sessionStorage.getItem('portfolio_loaded')) {
+    dismissLoaderImmediately();
+    return;
+  }
+  sessionStorage.setItem('portfolio_loaded', 'true');
+
+  // FAILSAFE: Always remove loader after 2.5s max
   const failsafeTimeout = setTimeout(() => {
-    if (loader.style.display !== 'none') {
-      loader.classList.add('hide');
-      setTimeout(() => {
-        loader.style.display = 'none';
-        loader.style.pointerEvents = 'none';
-        document.documentElement.classList.remove('loading-active');
-        document.body.classList.remove('loading-active');
-        document.body.style.overflow = '';
-        typewriterEffect();
-      }, 500);
-    }
-  }, 7000);
-  
+    dismissLoaderImmediately();
+  }, 2500);
+
   // Elements
   const loaderCenter = document.getElementById('loaderCenter');
   const loaderTitle = document.getElementById('loaderTitle');
@@ -127,118 +134,93 @@ window.addEventListener('load', () => {
   const loaderStatusText = document.getElementById('loaderStatusText');
   const loaderReadyText = document.getElementById('loaderReadyText');
   const fragments = document.querySelectorAll('.loader-code-fragment');
-  
+
   // Particles (lightweight)
   const lCanvas = document.getElementById('loader-particles');
-  const lCtx = lCanvas.getContext('2d');
-  lCanvas.width = window.innerWidth;
-  lCanvas.height = window.innerHeight;
-  let lParticles = [];
-  for(let i=0; i<30; i++) {
-    lParticles.push({
-      x: Math.random() * lCanvas.width, y: Math.random() * lCanvas.height,
-      vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5,
-      size: Math.random()*2+0.5, alpha: Math.random()*0.5+0.1
-    });
-  }
   let lAnim;
-  function drawLParticles() {
-    lCtx.clearRect(0,0,lCanvas.width,lCanvas.height);
-    lParticles.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if(p.x < 0) p.x = lCanvas.width; if(p.x > lCanvas.width) p.x = 0;
-      if(p.y < 0) p.y = lCanvas.height; if(p.y > lCanvas.height) p.y = 0;
-      lCtx.globalAlpha = p.alpha;
-      lCtx.fillStyle = '#00f0ff';
-      lCtx.beginPath(); lCtx.arc(p.x, p.y, p.size, 0, Math.PI*2); lCtx.fill();
-    });
-    lAnim = requestAnimationFrame(drawLParticles);
-  }
-  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    drawLParticles();
+  if (lCanvas) {
+    const lCtx = lCanvas.getContext('2d');
+    lCanvas.width = window.innerWidth;
+    lCanvas.height = window.innerHeight;
+    let lParticles = [];
+    for(let i=0; i<20; i++) {
+      lParticles.push({
+        x: Math.random() * lCanvas.width, y: Math.random() * lCanvas.height,
+        vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5,
+        size: Math.random()*2+0.5, alpha: Math.random()*0.5+0.1
+      });
+    }
+    function drawLParticles() {
+      lCtx.clearRect(0,0,lCanvas.width,lCanvas.height);
+      lParticles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < 0) p.x = lCanvas.width; if(p.x > lCanvas.width) p.x = 0;
+        if(p.y < 0) p.y = lCanvas.height; if(p.y > lCanvas.height) p.y = 0;
+        lCtx.globalAlpha = p.alpha;
+        lCtx.fillStyle = '#00f0ff';
+        lCtx.beginPath(); lCtx.arc(p.x, p.y, p.size, 0, Math.PI*2); lCtx.fill();
+      });
+      lAnim = requestAnimationFrame(drawLParticles);
+    }
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      drawLParticles();
+    }
   }
 
-  // Timeline Sequence
   const statuses = [
-    "INITIALIZING PORTFOLIO...",
-    "LOADING EXPERIENCE...",
+    "INITIALIZING...",
     "PREPARING PROJECTS...",
-    "LOADING SKILLS...",
-    "CONNECTING COMPONENTS...",
-    "OPTIMIZING INTERFACE..."
+    "OPTIMIZING..."
   ];
-  
+
   let startTime = Date.now();
   let progress = 0;
-  
-  // Phase 1: 0.0 - 0.8s -> Logo appears
+
+  // Immediate activate
   requestAnimationFrame(() => {
-    loaderCenter.classList.add('active');
+    if(loaderCenter) loaderCenter.classList.add('active');
+    if(loaderTitle) loaderTitle.classList.add('active');
+    if(loaderSubtitle) loaderSubtitle.classList.add('active');
+    if(loaderProgressWrap) loaderProgressWrap.classList.add('active');
   });
-  
-  // Phase 2: 0.8 - 1.8s -> Title/Subtitle appear
-  setTimeout(() => {
-    loaderTitle.classList.add('active');
-    loaderSubtitle.classList.add('active');
-  }, 800);
-  
-  // Phase 3: 1.8s -> Progress Starts
-  setTimeout(() => {
-    loaderProgressWrap.classList.add('active');
-    let progressInterval = setInterval(() => {
-      let elapsed = Date.now() - (startTime + 1800);
-      let duration = 2400; // 1.8s to 4.2s (2.4s total for progress)
-      progress = Math.min(100, (elapsed / duration) * 100);
-      
-      // Update DOM
-      loaderPctText.innerText = Math.floor(progress) + '%';
+
+  // Fast Progress: 0 to 100% in 900ms
+  let progressInterval = setInterval(() => {
+    let elapsed = Date.now() - startTime;
+    let duration = 900;
+    progress = Math.min(100, (elapsed / duration) * 100);
+
+    if (loaderPctText) loaderPctText.innerText = Math.floor(progress) + '%';
+    if (loaderPctCircle) {
       let offset = 176 - (176 * progress / 100);
       loaderPctCircle.style.strokeDashoffset = offset;
-      loaderBarFg.style.width = progress + '%';
-      loaderBarGlow.style.left = progress + '%';
-      
-      // Update text
-      let statusIdx = Math.floor((progress / 100) * statuses.length);
-      if(statusIdx >= statuses.length) statusIdx = statuses.length - 1;
-      loaderStatusText.innerText = statuses[statusIdx];
-      
-      // 3.2s -> show floating code
-      if(progress > 50) {
-        fragments.forEach(f => f.classList.add('active'));
-      }
-      
-      // 4.2s -> 100%
-      if(progress >= 100) {
-        clearInterval(progressInterval);
-        
-        // Phase 4: 4.2 - 4.5s -> Ready (0.3s)
+    }
+    if (loaderBarFg) loaderBarFg.style.width = progress + '%';
+    if (loaderBarGlow) loaderBarGlow.style.left = progress + '%';
+
+    let statusIdx = Math.floor((progress / 100) * statuses.length);
+    if(statusIdx >= statuses.length) statusIdx = statuses.length - 1;
+    if (loaderStatusText) loaderStatusText.innerText = statuses[statusIdx];
+
+    if(progress > 40) {
+      fragments.forEach(f => f.classList.add('active'));
+    }
+
+    if(progress >= 100) {
+      clearInterval(progressInterval);
+      setTimeout(() => {
+        loader.classList.add('hide');
         setTimeout(() => {
-          loaderCenter.style.opacity = 0;
-          loaderCenter.style.transform = 'scale(0.9)';
-          setTimeout(() => {
-            loaderReadyText.classList.add('active');
-            
-            // Phase 5: 4.5 - 5.0s -> Cinematic Reveal (0.5s)
-            setTimeout(() => {
-              document.querySelector('.loader-bg-aurora').style.background = 'radial-gradient(circle at 50% 50%, rgba(6,182,212, 0.3), transparent 80%)';
-              setTimeout(() => {
-                loader.classList.add('hide');
-                setTimeout(() => {
-                  loader.style.display = 'none';
-                  document.documentElement.classList.remove('loading-active');
-                  document.body.classList.remove('loading-active');
-                  cancelAnimationFrame(lAnim);
-                  clearTimeout(failsafeTimeout);
-                  typewriterEffect();
-                }, 500); // 0.5s fade out
-              }, 200); // 0.2s glow before fade
-            }, 300); // 0.3s showing READY
-            
-          }, 300); // Wait for center to fade out
-        }, 100); // Slight delay after hitting 100%
-      }
-    }, 30);
-  }, 1800);
+          loader.style.display = 'none';
+          document.documentElement.classList.remove('loading-active');
+          document.body.classList.remove('loading-active');
+          if (lAnim) cancelAnimationFrame(lAnim);
+          clearTimeout(failsafeTimeout);
+          if (typeof typewriterEffect === 'function') typewriterEffect();
+        }, 300);
+      }, 150);
+    }
+  }, 20);
 });
 
 // Particles Background with Connections & Repulsion
