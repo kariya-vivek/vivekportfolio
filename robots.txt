@@ -1,4 +1,53 @@
-﻿User-agent: *
+﻿# Allow all standard search engines
+User-agent: *
+Allow: /
+
+# OpenAI ChatGPT Crawlers (Search & Model Training)
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic Claude Crawlers
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+
+# Google Gemini & Search Crawlers
+User-agent: Googlebot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+# Meta / Facebook AI Crawlers
+User-agent: Meta-ExternalAgent
+Allow: /
+User-agent: FacebookBot
+Allow: /
+
+# Perplexity AI Crawlers
+User-agent: PerplexityBot
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+
+# Microsoft Bing & Copilot
+User-agent: Bingbot
+Allow: /
+
+# Common Crawl & General AI Research datasets
+User-agent: CCBot
+Allow: /
+User-agent: Bytespider
+Allow: /
+User-agent: Diffbot
 Allow: /
 
 Sitemap: https://vivekportfolio-vk.vercel.app/sitemap.xml
